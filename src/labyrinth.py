@@ -7,7 +7,8 @@ BLOCKED = '#'
 class Labyrinth:
 
     '''
-    Class the represents the labyrinth. It can check if the rod can do a certain movement and perform it.
+    Class the represents the labyrinth. It has information about the layout of the labyrinth and can check
+    if the rod can do a certain movement.
 
     Parameters:
         labyrinth_map (List [List [str]]): A rectangular array that represents the layout of the labyrinth. 
