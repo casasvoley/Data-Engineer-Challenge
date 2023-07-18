@@ -18,8 +18,7 @@ class Labyrinth:
 
     def __init__(self, labyrinth_map):
         self.labyrinth_map = labyrinth_map
-        #self.rod = Rod()
-        self.rod = Rod(orientation=0, center_position_x=1, center_position_y=1)
+        self.rod = Rod()
 
     def can_the_rod_move_to_the_right(self):
         x = self.rod.center_position_x
