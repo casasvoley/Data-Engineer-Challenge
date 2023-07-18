@@ -18,10 +18,10 @@ class Labyrinth:
                                            are blocked.
     '''
 
-    def __init__(self, labyrinth_map):
+    def __init__(self, labyrinth_map: list):
         self.labyrinth_map = labyrinth_map
 
-    def can_the_rod_move_to_the_right(self, rod_state):
+    def can_the_rod_move_to_the_right(self, rod_state: dict):
         orientation = rod_state["rod_orientation"]
         x = rod_state["rod_center_position_x"] 
         y = rod_state["rod_center_position_y"]
@@ -42,7 +42,7 @@ class Labyrinth:
             else: 
                 return False
             
-    def can_the_rod_move_to_the_left(self, rod_state):
+    def can_the_rod_move_to_the_left(self, rod_state: dict):
         orientation = rod_state["rod_orientation"]
         x = rod_state["rod_center_position_x"] 
         y = rod_state["rod_center_position_y"]
@@ -63,7 +63,7 @@ class Labyrinth:
             else: 
                 return False
             
-    def can_the_rod_move_upwards(self, rod_state):
+    def can_the_rod_move_upwards(self, rod_state: dict):
         orientation = rod_state["rod_orientation"]
         x = rod_state["rod_center_position_x"] 
         y = rod_state["rod_center_position_y"]
@@ -84,7 +84,7 @@ class Labyrinth:
             else: 
                 return False
             
-    def can_the_rod_move_downwards(self, rod_state):
+    def can_the_rod_move_downwards(self, rod_state: dict):
         orientation = rod_state["rod_orientation"]
         x = rod_state["rod_center_position_x"] 
         y = rod_state["rod_center_position_y"]
@@ -105,7 +105,7 @@ class Labyrinth:
             else: 
                 return False
             
-    def can_the_rod_change_orientation(self, rod_state):
+    def can_the_rod_change_orientation(self, rod_state: dict):
         orientation = rod_state["rod_orientation"]
         x = rod_state["rod_center_position_x"] 
         y = rod_state["rod_center_position_y"]
