@@ -1,4 +1,4 @@
-from labyrinth import Labyrinth
+from .labyrinth import Labyrinth
 
 # Rod orientation constants
 HORIZONTAL = 0
