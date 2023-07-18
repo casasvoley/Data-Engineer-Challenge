@@ -1,6 +1,6 @@
 from labyrinth import Labyrinth
 
-def find_minimal_number_of_moves(labyrinth: Labyrinth):
+def find_minimal_number_of_moves(labyrinth: Labyrinth, initial_state: dict):
 
     '''
     Method that uses a breadth-first search algorithm to find the minimal
@@ -15,14 +15,19 @@ def find_minimal_number_of_moves(labyrinth: Labyrinth):
     been checked without arriving at the goal (in which case the output is
     -1).
 
-    The states are represented as an array of 3 elements (e.g, [0, 2, 3]),
-    where the numbers are respectively the orientation of the rod
-    (0=horizontal, 1=vertical), the position of the center of the rod on
-    the X axis and the same thing on the Y axis.
+    The states are represented as an dicitonary of 3 elements:
+        {
+            "rod_orientation": 0 if horizontal, 1 if vertical
+            "rod_center_position_x": the position of the center of the rod
+                                     on the X axis
+            "rod_center_position_y": the position of the center of the rod
+                                     on the Y axis
+        }
 
     Parameters:
         labyrinth (Labyrinth): The labyrinth whose minimal answer we wish
                                to find.
+        initial_state (dict): The initial state where the rod is in.
     
     Returns:
         minimal_number_of_moves (int): The minimal number of moves needed
@@ -34,12 +39,70 @@ def find_minimal_number_of_moves(labyrinth: Labyrinth):
     visited_states = []
     to_be_visited_states = []
 
-    initial_state = [labyrinth.rod.orientation,
-                     labyrinth.rod.center_position_x,
-                     labyrinth.rod.center_position_y]
     visited_states.append(initial_state)
     to_be_visited_states.append(initial_state)
 
-    
+    while to_be_visited_states:
+        current_state = to_be_visited_states.pop(0)
+
+        # Check all possible moves from the current state
+
+        if labyrinth.can_the_rod_move_to_the_right(current_state):
+            neighbour_state = current_state.copy()
+            neighbour_state["rod_center_position_x"] += 1
+
+            # If the state has been seen before, it is not added
+            if not neighbour_state in visited_states:
+                visited_states.append(neighbour_state)
+                to_be_visited_states.append(neighbour_state)
+
+        if labyrinth.can_the_rod_move_to_the_left(current_state):
+            neighbour_state = current_state.copy()
+            neighbour_state["rod_center_position_x"] -= 1
+
+            # If the state has been seen before, it is not added
+            if not neighbour_state in visited_states:
+                visited_states.append(neighbour_state)
+                to_be_visited_states.append(neighbour_state)
+
+        if labyrinth.can_the_rod_move_upwards(current_state):
+            neighbour_state = current_state.copy()
+            neighbour_state["rod_center_position_y"] -= 1
+
+            # If the state has been seen before, it is not added
+            if not neighbour_state in visited_states:
+                visited_states.append(neighbour_state)
+                to_be_visited_states.append(neighbour_state)
+
+        if labyrinth.can_the_rod_move_downwards(current_state):
+            neighbour_state = current_state.copy()
+            neighbour_state["rod_center_position_y"] += 1
+
+            # If the state has been seen before, it is not added
+            if not neighbour_state in visited_states:
+                visited_states.append(neighbour_state)
+                to_be_visited_states.append(neighbour_state)
+
+        if labyrinth.can_the_rod_change_orientation(current_state):
+            neighbour_state = current_state.copy()
+            neighbour_state["rod_orientation"] = 1 - neighbour_state["rod_orientation"]
+
+            # If the state has been seen before, it is not added
+            if not neighbour_state in visited_states:
+                visited_states.append(neighbour_state)
+                to_be_visited_states.append(neighbour_state)
+
+
+    labyrinth
+
+layout = [['.', '.', '.', '.'],
+          ['.', '.', '.', '.'],
+          ['.', '.', '.', '.']]
+initial_state = {"rod_orientation": 0,
+                 "rod_center_position_x": 1,
+                 "rod_center_position_y": 0}
+print(initial_state.items())
+l = Labyrinth(layout)
+find_minimal_number_of_moves(l,initial_state)
 
 
