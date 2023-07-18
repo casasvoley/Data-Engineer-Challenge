@@ -1,6 +1,10 @@
 from labyrinth import Labyrinth
 
-def find_minimal_number_of_moves(labyrinth: Labyrinth, initial_state: dict):
+# Rod orientation constants
+HORIZONTAL = 0
+VERTICAL = 1
+
+def find_minimal_number_of_moves(labyrinth: Labyrinth, initial_state: dict, goal: list):
 
     '''
     Method that uses a breadth-first search algorithm to find the minimal
@@ -28,6 +32,7 @@ def find_minimal_number_of_moves(labyrinth: Labyrinth, initial_state: dict):
         labyrinth (Labyrinth): The labyrinth whose minimal answer we wish
                                to find.
         initial_state (dict): The initial state where the rod is in.
+        goal (list): The coordinates ([x,y]) of the goal cell.
     
     Returns:
         minimal_number_of_moves (int): The minimal number of moves needed
@@ -94,6 +99,21 @@ def find_minimal_number_of_moves(labyrinth: Labyrinth, initial_state: dict):
 
 
     labyrinth
+
+def is_current_state_the_goal(current_state: dict, goal: list):
+    if current_state["rod_orientation"] == HORIZONTAL:
+        if (current_state["rod_center_position_x"]+1 == goal[0] and
+                current_state["rod_center_position_y"] == goal[1]):
+            return True
+        else:
+            return False
+
+    if current_state["rod_orientation"] == VERTICAL: 
+        if (current_state["rod_center_position_x"] == goal[0] and
+                current_state["rod_center_position_y"]+1 == goal[1]):
+            return True
+        else:
+            return False
 
 layout = [['.', '.', '.', '.'],
           ['.', '.', '.', '.'],
