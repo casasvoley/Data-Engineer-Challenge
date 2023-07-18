@@ -37,7 +37,7 @@ class Labyrinth:
         if orientation == VERTICAL:
             # Check if the rod is not touching the right wall of the labyrinth and
             # if the three cells on the right of the rod are all empty
-            if x+1 < len(self.labyrinth_map[0]) and not any(BLOCKED in a[x+1] for a in self.labyrinth_map[y-1:y+2]):
+            if x+1 < len(self.labyrinth_map[0]) and all([a[x+1] == EMPTY for a in self.labyrinth_map[y-1:y+2]]):
                 return True
             else: 
                 return False
@@ -58,7 +58,7 @@ class Labyrinth:
         if orientation == VERTICAL:
             # Check if the rod is not touching the left wall of the labyrinth and
             # if the three cells on the left of the rod are all empty
-            if x-1 >= 0 and not any(BLOCKED in a[x-1] for a in self.labyrinth_map[y-1:y+2]):
+            if x-1 >= 0 and all([a[x-1] == EMPTY for a in self.labyrinth_map[y-1:y+2]]):
                 return True
             else: 
                 return False
@@ -71,7 +71,7 @@ class Labyrinth:
         if orientation == HORIZONTAL:
             # Check if the rod is not touching the top wall of the labyrinth and
             # if the three cells above the rod are all empty
-            if y-1 >= 0 and not any(BLOCKED in a[x-1:x+2] for a in self.labyrinth_map[y-1]):
+            if y-1 >= 0 and all([a == EMPTY for a in self.labyrinth_map[y-1][x-1:x+2]]):
                 return True
             else: 
                 return False
@@ -92,7 +92,7 @@ class Labyrinth:
         if orientation == HORIZONTAL:
             # Check if the rod is not touching the bottom wall of the labyrinth and
             # if the three cells below the rod are all empty
-            if y+1 < len(self.labyrinth_map) and not any(BLOCKED in a[x-1:x+2] for a in self.labyrinth_map[y+1]):
+            if y+1 < len(self.labyrinth_map) and all([a == EMPTY for a in self.labyrinth_map[y+1][x-1:x+2]]):
                 return True
             else: 
                 return False
@@ -114,7 +114,7 @@ class Labyrinth:
         # if the cells in the 3x3 area surrounding it are all empty
         if (x+1 < len(self.labyrinth_map[0]) and x-1 >= 0 and 
                 y+1 < len(self.labyrinth_map) and y-1 >= 0 and
-                not any(BLOCKED in a[x-1:x+2] for a in self.labyrinth_map[y-1:y+2])):
+                not any([BLOCKED in a[x-1:x+2] for a in self.labyrinth_map[y-1:y+2]])):
 
             return True
         else:
