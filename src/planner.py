@@ -41,14 +41,15 @@ def find_minimal_number_of_moves(labyrinth: Labyrinth, initial_state: dict, goal
                                        to get to the goal, its value is -1. 
     '''
 
-    visited_states = []
-    to_be_visited_states = []
+    visited_states = [] # States that have already been reached
+    to_be_expanded_paths = [] # Paths that can be further expanded
 
     visited_states.append(initial_state)
-    to_be_visited_states.append(initial_state)
+    to_be_expanded_paths.append([initial_state])
 
-    while to_be_visited_states:
-        current_state = to_be_visited_states.pop(0)
+    while to_be_expanded_paths:
+        current_path = to_be_expanded_paths.pop(0) # Path that we are currently expanding
+        current_state = current_path[-1] # State where the current path ends
 
         # Check all possible moves from the current state
 
@@ -56,73 +57,96 @@ def find_minimal_number_of_moves(labyrinth: Labyrinth, initial_state: dict, goal
             neighbour_state = current_state.copy()
             neighbour_state["rod_center_position_x"] += 1
 
-            # If the state has been seen before, it is not added
+            if is_current_state_the_goal(neighbour_state, goal):
+                current_path.append(neighbour_state)
+                return len(current_path)-1
+
+            # If the state has been seen before, it is disregarded
             if not neighbour_state in visited_states:
                 visited_states.append(neighbour_state)
-                to_be_visited_states.append(neighbour_state)
+                new_path = current_path.copy()
+                new_path.append(neighbour_state)
+                to_be_expanded_paths.append(new_path)
 
         if labyrinth.can_the_rod_move_to_the_left(current_state):
             neighbour_state = current_state.copy()
             neighbour_state["rod_center_position_x"] -= 1
 
-            # If the state has been seen before, it is not added
+            if is_current_state_the_goal(neighbour_state, goal):
+                current_path.append(neighbour_state)
+                return len(current_path)-1
+
+            # If the state has been seen before, it is disregarded
             if not neighbour_state in visited_states:
                 visited_states.append(neighbour_state)
-                to_be_visited_states.append(neighbour_state)
+                new_path = current_path.copy()
+                new_path.append(neighbour_state)
+                to_be_expanded_paths.append(new_path)
 
         if labyrinth.can_the_rod_move_upwards(current_state):
             neighbour_state = current_state.copy()
             neighbour_state["rod_center_position_y"] -= 1
 
-            # If the state has been seen before, it is not added
+            if is_current_state_the_goal(neighbour_state, goal):
+                current_path.append(neighbour_state)
+                return len(current_path)-1
+
+            # If the state has been seen before, it is disregarded
             if not neighbour_state in visited_states:
                 visited_states.append(neighbour_state)
-                to_be_visited_states.append(neighbour_state)
+                new_path = current_path.copy()
+                new_path.append(neighbour_state)
+                to_be_expanded_paths.append(new_path)
 
         if labyrinth.can_the_rod_move_downwards(current_state):
             neighbour_state = current_state.copy()
             neighbour_state["rod_center_position_y"] += 1
 
-            # If the state has been seen before, it is not added
+            if is_current_state_the_goal(neighbour_state, goal):
+                current_path.append(neighbour_state)
+                return len(current_path)-1
+
+            # If the state has been seen before, it is disregarded
             if not neighbour_state in visited_states:
                 visited_states.append(neighbour_state)
-                to_be_visited_states.append(neighbour_state)
+                new_path = current_path.copy()
+                new_path.append(neighbour_state)
+                to_be_expanded_paths.append(new_path)
 
         if labyrinth.can_the_rod_change_orientation(current_state):
             neighbour_state = current_state.copy()
             neighbour_state["rod_orientation"] = 1 - neighbour_state["rod_orientation"]
 
-            # If the state has been seen before, it is not added
+            if is_current_state_the_goal(neighbour_state, goal):
+                current_path.append(neighbour_state)
+                return len(current_path)-1
+
+            # If the state has been seen before, it is disregarded
             if not neighbour_state in visited_states:
                 visited_states.append(neighbour_state)
-                to_be_visited_states.append(neighbour_state)
+                new_path = current_path.copy()
+                new_path.append(neighbour_state)
+                to_be_expanded_paths.append(new_path)
 
-
-    labyrinth
+    return -1
 
 def is_current_state_the_goal(current_state: dict, goal: list):
+
+    '''
+    Method that checks if, in a given state, the rod has reached the goal cell.
+
+    Parameters:
+        current_state (dict): The state where the rod is in.
+        goal (list): Coordinates ([x,y]) of the cell that we wish to reach.
+    
+    Returns:
+        A boolean stating if the rod is situated in the goal cell or not.
+    '''
+
     if current_state["rod_orientation"] == HORIZONTAL:
-        if (current_state["rod_center_position_x"]+1 == goal[0] and
-                current_state["rod_center_position_y"] == goal[1]):
-            return True
-        else:
-            return False
+        return goal in [[current_state["rod_center_position_x"]+i, 
+                        current_state["rod_center_position_y"]] for i in range(-1,2)]
 
     if current_state["rod_orientation"] == VERTICAL: 
-        if (current_state["rod_center_position_x"] == goal[0] and
-                current_state["rod_center_position_y"]+1 == goal[1]):
-            return True
-        else:
-            return False
-
-layout = [['.', '.', '.', '.'],
-          ['.', '.', '.', '.'],
-          ['.', '.', '.', '.']]
-initial_state = {"rod_orientation": 0,
-                 "rod_center_position_x": 1,
-                 "rod_center_position_y": 0}
-print(initial_state.items())
-l = Labyrinth(layout)
-find_minimal_number_of_moves(l,initial_state)
-
-
+        return goal in [[current_state["rod_center_position_x"], 
+                        current_state["rod_center_position_y"]+i] for i in range(-1,2)]
